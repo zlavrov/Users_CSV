@@ -1,0 +1,37 @@
+/* Additional styling of the results page */
+
+
+table { 
+    table-layout: fixed;
+    width: 100%;
+}
+
+td, th { 
+    text-align: center;
+    width: 2%;
+}
+
+.btn {
+    background-color: #1e90ff;
+    border: none;
+    color: white;
+    padding: 6px 15px;
+    cursor: pointer;
+    font-size: 15px;
+  }
+  
+.btn:hover {
+  	background-color: #007bff;
+}
+
+.import {
+	width: 100%;
+}
+
+.clear_records {
+	width: 100%;
+}
+
+th {
+    cursor: pointer;
+}
