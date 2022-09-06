@@ -4,6 +4,19 @@
  */
 
 
+const selectElement = document.querySelector('.ice-cream');
+selectElement.addEventListener('change', (event) => {
+    const result = document.querySelector('.result');
+    result.textContent = sortTable(event.target.value);
+});
+
+
+
+/**
+ * Initializes the loading of an external script
+ */
+
+
 bsCustomFileInput.init()
 
 
@@ -12,18 +25,21 @@ bsCustomFileInput.init()
  * Limits file uploads to no more than 1 MB
  */
 
-let uploadField = document.getElementById("file_id");
-let message = document.getElementById("message");
-uploadField.onchange = function() {
-    if(this.files[0].size > 1048576){
-        message.innerHTML = "File is too big";
-        this.value = "";
-    } else {
-        message.innerHTML = "";
-    }
-};
+function check_size_file() {
 
+    let uploadField = document.getElementById("file_id");
+    let message = document.getElementById("message");
+    uploadField.onchange = function() {
+        if(this.files[0].size > 1048576){
+            message.innerHTML = "File is too big";
+            this.value = "";
+        } else {
+            message.innerHTML = "";
+        }
+    };
+}
 
+check_size_file();
 
 /**
  * Sends an ajax request to delete records from the database
