@@ -1,7 +1,7 @@
 <!-- File import form -->
 
 
-<form class="mt-4" action="/Insert" method="POST" enctype="multipart/form-data">
+<form class="mt-4" action="/import" method="POST" enctype="multipart/form-data">
     <div class="custom-file">
         <input type="file" id="file_id" class="form-control" name="name_csv_file" accept=".csv" required>
         <label class="custom-file-label" for="file_id">Choose file</label>

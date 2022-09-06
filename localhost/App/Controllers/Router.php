@@ -11,46 +11,36 @@
 class Router {
 
 
+    public static function router($route = "") {
+
+        if ($route == "") {
+            require_once "App/views/pages/home.php";
+        } else if ($_SERVER['REQUEST_METHOD'] === "GET") {
+            require_once "App/views/pages/" . $route . ".php";
+        } else if ($_SERVER['REQUEST_METHOD'] === "POST") {
+            if ($_GET['parametr'] == "clear") {
+                Clear::clear();
+            } else if ($_GET['parametr'] == "import") {
+                Insert::insert();
+            }
+        }
+    }
+
+
     /**
      * If there is a connection to the database, then it further determines the method and directs it along the route
      */
 
     public static function start() {
 
-        if(self::connect()) {
-            if ($_SERVER['REQUEST_METHOD'] === "POST") {
-                $parametr = $_GET['parametr'];
-                if ($parametr == "Insert") {
-                    Insert::insert();
-                } else if ($parametr == "clear") {
-                    Clear::clear();
-                }
-            } else if ($_SERVER['REQUEST_METHOD'] === "GET") {
-                if ($_GET['parametr'] == "") {
-                    require_once "App/views/pages/home.php";
-                } else {
-                    $parametr = $_GET['parametr'];
-                    require_once "App/views/pages/" . $parametr . ".php";
-                }
-
-            }
-
+        $permission = Connection::connection();
+        if($permission) {
+            self::router($_GET['parametr']);
         } else {
-            Errorhandler::Errorhandler("Database error: " . $e->getMessage());
+            Errorhandler::Errorhandler("Database error");
         }
     }
 
-    
-
-    /**
-     * Gets a response about the state of the connection to the database
-     */
-
-    public static function connect() {
-
-        return Connection::connection();
-
-    }
 }
 
 ?>
