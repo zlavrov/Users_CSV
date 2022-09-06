@@ -26,8 +26,13 @@ class Router {
                     Clear::clear();
                 }
             } else if ($_SERVER['REQUEST_METHOD'] === "GET") {
-                $parametr = $_GET['parametr'];
-                require_once "App/views/pages/" . $parametr . ".php";
+                if ($_GET['parametr'] == "") {
+                    require_once "App/views/pages/home.php";
+                } else {
+                    $parametr = $_GET['parametr'];
+                    require_once "App/views/pages/" . $parametr . ".php";
+                }
+
             }
 
         } else {
