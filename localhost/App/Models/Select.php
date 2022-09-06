@@ -23,28 +23,18 @@ class Select {
             try {
                 $conn = new PDO("mysql:host=" . $config["host"] . ":" . $config["port"] . ";dbname=" . $config["dbname"] . "", $config["username"], $config["password"]);
                 $sql = "SELECT * FROM " . $config["tbname"] . "";
-                $result = $conn->query($sql);
+                $sth = $conn->query($sql);
+                $result = $sth->fetchAll();
                 self::clean_export_file();
                 $fd = fopen("App/views/components/files_export/Export_to_CSV.csv", 'a') or Errorhandler::Errorhandler("Failed to write to file Export_to_CSV.csv");
                 $arr = ["UID", "Name", "Age", "Email", "Phone", "Gender"];
                 fputcsv($fd, $arr);
-                $respons = require_once "App/views/inclusion/thead.php";
                 foreach($result as $row){
-                    $respons .= "<tr>";
-                    $respons .= '<td scope="col"><b>' . $row["UID"] . '</b></td>';
-                    $respons .= "<td>" . $row["Name"] . "</td>";
-                    $respons .= "<td>" . $row["Age"] . "</td>";
-                    $respons .= "<td>" . $row["Email"] . "</td>";
-                    $respons .= "<td>" . $row["Phone"] . "</td>";
-                    $respons .= "<td>" . $row["Gender"] . "</td>";
-                    $respons .= "</tr>";
-
                     $ar = [$row["UID"], $row["Name"], $row["Age"], $row["Email"], $row["Phone"], $row["Gender"]];
                     fputcsv($fd, $ar);
                 }
-                $respons .= "</tbody></table>";
                 fclose($fd);
-                echo $respons;
+                return $result;
             }
             catch (PDOException $e) {
                 Errorhandler::Errorhandler("Database error: " . $e->getMessage());
