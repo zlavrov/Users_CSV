@@ -1,17 +1,3 @@
-
-/**
- * Initializes the loading of an external script
- */
-
-
-const selectElement = document.querySelector('.ice-cream');
-selectElement.addEventListener('change', (event) => {
-    const result = document.querySelector('.result');
-    result.textContent = sortTable(event.target.value);
-});
-
-
-
 /**
  * Initializes the loading of an external script
  */
