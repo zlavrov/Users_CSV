@@ -1,6 +1,5 @@
 /* Additional styling of the results page */
 
-
 table { 
     table-layout: fixed;
     width: 100%;
@@ -34,4 +33,12 @@ td, th {
 
 th {
     cursor: pointer;
+}
+
+
+select#select_name {
+    border:0px;
+    outline:0px;
+    font-weight: bold;
+    padding: 0.037rem 0.225rem 0.037rem 0.075rem;
 }

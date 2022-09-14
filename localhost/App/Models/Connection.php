@@ -3,27 +3,31 @@
 namespace App\Models;
 
 use App\Models\Config\Config;
+use App\Models\Errors;
 use PDO;
 use PDOException;
-use App\Models\Errorhandler;
 
 class Connection {
 
-    
+    public static function conn() {
+        $config = Config::config();
+        $conn = new PDO("mysql:host=" . $config["host"] . ":" . $config["port"] . ";dbname=" . $config["dbname"] . "", $config["username"], $config["password"]);
+        return $conn;
+    }
+
     /**
      * Checking the database connection
      */
 
     public static function connection() {
 
-        $config = Config::config();
         try {
-            $conn = new PDO("mysql:host=" . $config["host"] . ":" . $config["port"] . ";dbname=" . $config["dbname"] . "", $config["username"], $config["password"]);
+            $conn = self::conn();
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            return true;
+            return "true";
         }
         catch (PDOException $e) {
-            Errorhandler::Errorhandler("Database error: " . $e->getMessage());
+            Errors::errors("Connection failed: " . $e->getMessage());
         }
     }
 }

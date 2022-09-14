@@ -1,12 +1,12 @@
 <?php
 
 namespace App\Models;
+use App\Models\Errors;
 use App\Models\Config\Config;
-use PDO;
 use PDOException;
-use App\Models\Errorhandler;
 
 class Clear {
+
 
     /**
      * Clears the database of all records
@@ -17,16 +17,16 @@ class Clear {
         $response = self::check_user();
         $config = Config::config();
         try {
-            $conn = new PDO("mysql:host=" . $config["host"] . ":" . $config["port"] . ";dbname=" . $config["dbname"] . "", $config["username"], $config["password"]);
+            $conn = Connection::conn();
             if ($response) {
                 $sql = "TRUNCATE TABLE " . $config["tbname"] . ";";
                 $conn->exec($sql);
             } else if ($response) {
-                Errorhandler::Errorhandler("No records in database");
+                Errors::errors("No records in database");
             }
             self::clean_export_file();
         } catch(PDOException $e) {
-            Errorhandler::Errorhandler("Database error: " . $e->getMessage());
+            Errors::errors("Database error: " . $e->getMessage());
         }
     }
 
@@ -37,7 +37,7 @@ class Clear {
 
     public static function clean_export_file() {
 
-        $fd = fopen("App/views/components/files_export/Export_to_CSV.csv", 'w') or Errorhandler::Errorhandler("Failed to clear file Export_to_CSV.csv");
+        $fd = fopen("files/export/Export_to_CSV.csv", 'w') or Errors::errors("Failed to clear file Export_to_CSV.csv");
         fclose($fd);
     }
 
@@ -50,7 +50,7 @@ class Clear {
 
         $config = Config::config();
         try {
-            $conn = new PDO("mysql:host=" . $config["host"] . ":" . $config["port"] . ";dbname=" . $config["dbname"] . "", $config["username"], $config["password"]);
+            $conn = Connection::conn();
             $check_user = $conn->query("SELECT EXISTS(SELECT * FROM " . $config["tbname"] . ") AS check_user");
             foreach($check_user as $checks) {
                 if ($checks['check_user'] == 1) {
@@ -60,10 +60,9 @@ class Clear {
                 }
             }
         } catch(PDOException $e) {
-            Errorhandler::Errorhandler("Database error: " . $e->getMessage());
+            Errors::errors("Database error: " . $e->getMessage());
         }
     }
 }
-
 
 ?>
