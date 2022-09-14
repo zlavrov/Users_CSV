@@ -21,10 +21,12 @@ class Clear {
             if ($response) {
                 $sql = "TRUNCATE TABLE " . $config["tbname"] . ";";
                 $conn->exec($sql);
+                header("Location: /import");
             } else if ($response) {
                 Errors::errors("No records in database");
             }
             self::clean_export_file();
+            header("Location: /import");
         } catch(PDOException $e) {
             Errors::errors("Database error: " . $e->getMessage());
         }

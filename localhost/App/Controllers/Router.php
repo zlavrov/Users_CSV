@@ -13,20 +13,24 @@ class Router {
 
         $directory = 'App/Views/Pages/';
         $scanned_directory = array_diff(scandir($directory), array('..', '.'));
+        if (isset($_GET['parametr'])) {
 
-        if (in_array($_GET['parametr'] . ".php", $scanned_directory)) {
-            require_once "App/Views/Pages/" . $_GET['parametr'] . ".php";
-        } else if ($_GET['parametr'] == "uploadfile") {
-            Import::uploadfile();
-        } else if ($_GET['parametr'] == "clear") {
-            Clear::clear();
-        } else if ($_GET['parametr'] == "sorts") {
-            $column = $_POST['column'];
-            $orientation = $_POST['orientation'];
-            echo Results::results($column, $orientation);
+            if (in_array($_GET['parametr'] . ".php", $scanned_directory)) {
+                require_once "App/Views/Pages/" . $_GET['parametr'] . ".php";
+            } else if ($_GET['parametr'] == "uploadfile") {
+                Import::uploadfile();
+            } else if ($_GET['parametr'] == "clear") {
+                Clear::clear();
+            } else if ($_GET['parametr'] == "sorts") {
+                $column = $_POST['column'];
+                $orientation = $_POST['orientation'];
+                echo Results::results($column, $orientation);
+            } else {
+                require_once "App/Views/Pages/home.php";
+            }
         } else {
             require_once "App/Views/Pages/home.php";
-        }   
+        }
     }
 
     /**
